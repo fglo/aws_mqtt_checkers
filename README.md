@@ -1,4 +1,4 @@
-﻿# iot_aws_mqtt_checkers
+# iot_aws_mqtt_checkers
 
 Projekt został stworzony na potrzeby przemiotu **IOT**
 
