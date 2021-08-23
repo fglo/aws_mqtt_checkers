@@ -1,0 +1,47 @@
+version: '3.1'
+services:
+
+  mosquitto:
+    image: eclipse-mosquitto
+    restart: always
+    ports:
+      - 1883:1883 
+      - 9001:9001
+      
+  fast-api-server:
+    image: fast-api-server
+    build:
+      context: ./fast_api_server
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ./certs/rootCA.crt:/app/rootCA.crt
+      - ./certs/user11.cert.pem:/app/cert.pem
+      - ./certs/user11.private.key.txt:/app/private.key.txt
+    environment:
+      MQTT_WHERE: aws
+      MQTT_HOST: aezjhvuusftle-ats.iot.eu-central-1.amazonaws.com
+      MQTT_PORT: 8883
+
+  mqtt-sub:
+    image: mqtt-sub
+    build:
+      context: ./mqtt_sub
+      dockerfile: ./Dockerfile
+    restart: always
+    depends_on:
+      - mosquitto
+    volumes:
+      - ./mqtt_sub/messages.csv:/app/messages.csv
+      - ./certs/rootCA.crt:/app/rootCA.crt
+      - ./certs/user11.cert.pem:/app/cert.pem
+      - ./certs/user11.private.key.txt:/app/private.key.txt
+    environment:
+      MQTT_WHERE: aws
+      MQTT_HOST: aezjhvuusftle-ats.iot.eu-central-1.amazonaws.com
+      MQTT_PORT: 8883
+
+networks:
+  default:
