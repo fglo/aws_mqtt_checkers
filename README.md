@@ -1,6 +1,4 @@
-# iot_aws_mqtt_checkers
-
-Projekt został stworzony na potrzeby przemiotu **IOT**
+# AWS MQTT Sense Hat Checkers
 
 Gra w warcaby korzystająca z wyświetlacza LED oraz joysticka płytki Sense Hat.
 
